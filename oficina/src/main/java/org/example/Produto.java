@@ -1,6 +1,8 @@
-package org.example;
+import java.sql.Date;
 import java.text.NumberFormat;
-public class Produto {
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+public abstract class Produto {
 	
 	private static final double MARGEM_PADRAO = 0.2;
 	private String descricao;
@@ -47,6 +49,25 @@ public class Produto {
 		init(desc, precoCusto, MARGEM_PADRAO);
 	}
 	
+	//Getters e Setters
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	public double getPrecoCusto() {
+		return precoCusto;
+	}
+	public void setPrecoCusto(double precoCusto) {
+		this.precoCusto = precoCusto;
+	}
+	public double getMargemLucro() {
+		return margemLucro;
+	}
+	public void setMargemLucro(double margemLucro) {
+		this.margemLucro = margemLucro;
+	}
 	 /**
      * Retorna o valor de venda do produto, considerando seu preço de custo e margem de lucro.
      * @return Valor de venda do produto (double, positivo)
@@ -76,5 +97,36 @@ public class Produto {
 	public boolean equals(Object obj){
 		Produto outro = (Produto)obj;
 		return this.descricao.toLowerCase().equals(outro.descricao.toLowerCase());
+	}
+
+	/**
+	* Gera uma linha de texto a partir dos dados do produto
+	* @return Uma string no formato "tipo; descrição;preçoDeCusto;margemDeLucro;[dataDeValidade]"
+	*/
+	public abstract String gerarDadosTexto();
+
+	/**
+	* Cria um produto a partir de uma linha de dados em formato texto. A linha de dados deve estar de acordo com a
+	formatação
+	* "tipo; descrição;preçoDeCusto;margemDeLucro;[dataDeValidade]"
+	* ou o funcionamento não será garantido. Os tipos são 1 para produto não perecível e 2 para perecível.
+	* @param linha Linha com os dados do produto a ser criado.
+	* @return Um produto com os dados recebidos
+	*/
+	static Produto criarDoTexto(String linha){
+		Produto novoProduto = null;
+		DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String [] atributos = linha.split(";");
+		int tipoProduto = Integer.parseInt(atributos[0]);
+		String descricao = atributos[1];
+		double precoCusto = Double.parseDouble(atributos[2]);
+		double margemLucro = Double.parseDouble(atributos[3]);
+		if(tipoProduto == 1){
+			novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+		} else if (tipoProduto == 2){
+			String dataValidade = atributos[4];
+			novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formatoData));
+		}
+		return novoProduto;
 	}
 }

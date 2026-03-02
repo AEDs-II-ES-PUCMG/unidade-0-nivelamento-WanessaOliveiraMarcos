@@ -1,4 +1,4 @@
-package org.example.exceptions;
+package exceptions;
 
 public class ProdutoVencidoException extends RuntimeException {
     public ProdutoVencidoException(String message) {

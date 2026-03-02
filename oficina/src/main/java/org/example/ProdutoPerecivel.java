@@ -1,7 +1,7 @@
-package org.example;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import org.example.exceptions.ProdutoVencidoException;
+import exceptions.ProdutoVencidoException;
 
 public class ProdutoPerecivel extends Produto {
     private static final int PRAZO_DESCONTO = 7;
@@ -54,5 +54,20 @@ public class ProdutoPerecivel extends Produto {
     public String toString() {
         return super.toString() +
                 " | Data de Validade: " + dataDeValidade;
+    }
+
+    /**
+    * Gera uma linha de texto a partir dos dados do produto. Preço e margem de lucro vão formatados com 2 casas
+    decimais.
+    * Data de validade vai no formato dd/mm/aaaa
+    * @return Uma string no formato "2; descrição;preçoDeCusto;margemDeLucro;dataDeValidade"
+    */
+    @Override
+    public String gerarDadosTexto(){
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String precoFormatado = String.format("%.2f", this.getPrecoCusto()).replace(",",".");
+        String margemFormatada = String.format("%.2f", this.getMargemLucro()).replace(",",".");
+        String dataFormatada = formato.format(dataDeValidade);
+        return ("2;%s;%s;%s;%s".formatted(getDescricao(), precoFormatado, margemFormatada, dataFormatada));
     }
 }
