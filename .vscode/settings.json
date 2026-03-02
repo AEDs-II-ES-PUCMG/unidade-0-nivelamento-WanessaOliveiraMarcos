@@ -1,0 +1,6 @@
+{
+    "java.project.sourcePaths": [
+        "src",
+        "oficina/src/main/java/org/example"
+    ]
+}
