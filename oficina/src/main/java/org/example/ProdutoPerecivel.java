@@ -1,7 +1,8 @@
+package org.example;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import exceptions.ProdutoVencidoException;
+import org.example.exceptions.ProdutoVencidoException;
 
 public class ProdutoPerecivel extends Produto {
     private static final int PRAZO_DESCONTO = 7;
@@ -52,8 +53,9 @@ public class ProdutoPerecivel extends Produto {
 
     @Override
     public String toString() {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return super.toString() +
-                " | Data de Validade: " + dataDeValidade;
+                " | Data de Validade: " + dataDeValidade.format(formato);
     }
 
     /**

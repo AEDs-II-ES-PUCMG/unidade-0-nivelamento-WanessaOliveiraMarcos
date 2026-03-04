@@ -1,3 +1,4 @@
+package org.example;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-import exceptions.ProdutoNaoEncontradoException;
+import org.example.exceptions.ProdutoNaoEncontradoException;
 
 public class Comercio {
     /** Para inclusão de novos produtos no vetor */
